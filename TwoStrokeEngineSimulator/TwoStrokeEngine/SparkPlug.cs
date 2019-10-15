@@ -29,6 +29,7 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
 
     public class SparkPlug : ISparkPlug
     {
+        
 
         private SparkPlugState _sparkPlugState;
         

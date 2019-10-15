@@ -9,6 +9,9 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
     /// </summary>
     public class Controller
     {
+
+        
+
         private IEngine _engine;
         private IPiston _piston;
         private ISparkPlug _sprakPlug;
@@ -58,11 +61,9 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
             _piston.UpdatePistonStates(distanceTraveled,MPH);
 
 
-            // Activate spark plug if new piston state is at top, else deactivate spark plug
-            if (_piston.GetState() == PistonState.Top)
-                _sprakPlug.Ignition();
-            else
-                _sprakPlug.StopIgnition();
+            // Implement spark plug control via event
+            // Activate spark plug if new piston state is at top, else deactivate spark plug.
+            _piston.PistonStateChangeEvent += _piston_PistonStateChangeEvent;
 
 
             // Print info. to console
@@ -71,6 +72,8 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
             
 
         }
+
+        
 
 
         /// <summary>
@@ -145,5 +148,17 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
             return Math.Round(MPH * 17.6/1000, 10);
         }
 
+        /// <summary>
+        /// Piston State Change Event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _piston_PistonStateChangeEvent(object sender, PistonState e)
+        {
+            if (e == PistonState.Top)
+                _sprakPlug.Ignition();
+            else
+                _sprakPlug.StopIgnition();
+        }
     }
 }

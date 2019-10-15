@@ -33,11 +33,17 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
         /// <param name="traveledDistance"></param>
         /// <param name="speed"></param>
         void UpdatePistonStates(double traveledDistance, double speed);
+
+
+        /// <summary>
+        /// Piston State change event
+        /// </summary>
+        event EventHandler<PistonState> PistonStateChangeEvent;
     }
 
     public class Piston : IPiston
     {
-        
+        public event EventHandler<PistonState> PistonStateChangeEvent;
 
         private PistonState _state;
         private double _displacement;
@@ -107,7 +113,8 @@ namespace TwoStrokeEngineSimulator.TwoStrokeEngine
             else if (_curDisplacement <= 0 && _curDisplacement > -_displacement / 2 && traveledDistance > 0)
                 _state = PistonState.BotToMid;
 
-            
+
+            PistonStateChangeEvent?.Invoke(this, _state);
 
         }
 
